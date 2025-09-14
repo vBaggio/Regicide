@@ -17,9 +17,11 @@ uses
     constructor Create(AID: Integer; AName: string);
     destructor Destroy; override;
 
+    function ToString: string; reintroduce;
+    function Hand: TArray<TCard>;
+
     property ID: Integer read FID;
     property Name: string read FName;
-    property Hand: TObjectList<TCard> read FHand;
   end;
 
 implementation
@@ -31,12 +33,23 @@ begin
   FID := AID;
   FName := AName;
   FHand := TObjectList<TCard>.Create;
+
 end;
 
 destructor TPlayer.Destroy;
 begin
   FreeAndNil(FHand);
   inherited;
+end;
+
+function TPlayer.Hand: TArray<TCard>;
+begin
+  Result := FHand.ToArray;
+end;
+
+function TPlayer.ToString: string;
+begin
+  Result := FName;
 end;
 
 end.

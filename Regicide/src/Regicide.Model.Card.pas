@@ -44,8 +44,8 @@ type
 
   public
     constructor Create(ASuit: TSuit; ARank: TRank);
-    function ToString: string;
-
+    function ToString: string; reintroduce;
+    function Equals(ACard: TCard): Boolean; reintroduce;
 
     property Suit: TSuit read FSuit;
     property Rank: TRank read FRank;
@@ -60,6 +60,11 @@ begin
   inherited Create;
   FSuit := ASuit;
   FRank := ARank;
+end;
+
+function TCard.Equals(ACard: TCard): Boolean;
+begin
+  Result := (ACard.Suit = Self.FSuit) and (ACard.Rank = Self.FRank);
 end;
 
 function TCard.ToString: string;

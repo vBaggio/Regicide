@@ -17,7 +17,7 @@ type
     procedure Shuffle;
     function DrawCard: TCard;
     procedure AddCard(ACard: TCard); overload;
-    procedure AddCard(ACards: TArray<TCard>);
+    procedure AddCard(ACards: TArray<TCard>); overload;
     function CardCount: Integer;
     function ContainsCard(ACard: TCard): Boolean;
   end;
@@ -28,13 +28,13 @@ implementation
 
 procedure TDeck.AddCard(ACards: TArray<TCard>);
 begin
-
+ for var LCard in ACards do
+    AddCard(LCard);
 end;
 
 procedure TDeck.AddCard(ACard: TCard);
 begin
-  //validation...
-
+  //validations...
   FCards.Push(ACard);
 end;
 
@@ -56,12 +56,23 @@ end;
 
 function TDeck.DrawCard: TCard;
 begin
-  Result := FCards.Extract;
+  if FCards.IsEmpty then
+    Result := nil
+  else
+    Result := FCards.Extract;
 end;
 
 function TDeck.ContainsCard(ACard: TCard): Boolean;
 begin
+  Result := False;
 
+  for var LCard in FCards do
+  begin
+    Result := LCard.Equals(ACard);
+
+    if Result then
+      break;
+  end;
 end;
 
 procedure TDeck.Shuffle;
