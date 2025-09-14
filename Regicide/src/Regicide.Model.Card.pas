@@ -7,8 +7,36 @@ uses
 
 type
   TSuit = (Spades, Hearts, Diamonds, Clubs);
+
+const
+  SUIT_NAMES: array[TSuit] of string = (
+    'Spades',
+    'Hearts',
+    'Diamonds',
+    'Clubs'
+  );
+
+type
   TRank = (Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace);
 
+const
+  RANK_NAMES: array[TRank] of string = (
+    'Two',
+    'Three',
+    'Four',
+    'Five',
+    'Six',
+    'Seven',
+    'Eight',
+    'Nine',
+    'Ten',
+    'Jack',
+    'Queen',
+    'King',
+    'Ace'
+  );
+
+type
   TCard = class
   private
     FSuit: TSuit;
@@ -16,6 +44,8 @@ type
 
   public
     constructor Create(ASuit: TSuit; ARank: TRank);
+    function ToString: string;
+
 
     property Suit: TSuit read FSuit;
     property Rank: TRank read FRank;
@@ -30,6 +60,11 @@ begin
   inherited Create;
   FSuit := ASuit;
   FRank := ARank;
+end;
+
+function TCard.ToString: string;
+begin
+  Result := Format('%s of %s', [RANK_NAMES[FRank], SUIT_NAMES[FSuit]]);
 end;
 
 end.

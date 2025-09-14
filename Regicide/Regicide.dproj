@@ -180,6 +180,8 @@
         </DelphiCompile>
         <DCCReference Include="src\Regicide.Model.Card.pas"/>
         <DCCReference Include="src\Regicide.Model.Player.pas"/>
+        <DCCReference Include="src\Regicide.Model.Deck.pas"/>
+        <DCCReference Include="src\Regicide.Utils.Stack.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -1182,6 +1184,7 @@
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
             </Platforms>
+            <ModelSupport>False</ModelSupport>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>
