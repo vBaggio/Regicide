@@ -16,11 +16,19 @@ const
     'Clubs'
   );
 
+  SUIT_ABVS: array[TSuit] of Char = (
+    'S',
+    'H',
+    'D',
+    'C'
+  );
+
 type
-  TRank = (Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace);
+  TRank = (Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King);
 
 const
   RANK_NAMES: array[TRank] of string = (
+    'Ace',
     'Two',
     'Three',
     'Four',
@@ -32,8 +40,23 @@ const
     'Ten',
     'Jack',
     'Queen',
-    'King',
-    'Ace'
+    'King'
+  );
+
+  RANK_ABVS: array[TRank] of Char = (
+    'A',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '0',
+    'J',
+    'Q',
+    'K'
   );
 
 type
@@ -41,30 +64,79 @@ type
   private
     FSuit: TSuit;
     FRank: TRank;
-
+    function getCode: string;
   public
-    constructor Create(ASuit: TSuit; ARank: TRank);
+    constructor Create(ARank: TRank; ASuit: TSuit); overload;
+    constructor Create(ACode: string); overload;
+
     function ToString: string; reintroduce;
     function Equals(ACard: TCard): Boolean; reintroduce;
 
     property Suit: TSuit read FSuit;
     property Rank: TRank read FRank;
+    property Code: string read getCode;
   end;
 
 implementation
 
 { TCard }
 
-constructor TCard.Create(ASuit: TSuit; ARank: TRank);
+constructor TCard.Create(ARank: TRank; ASuit: TSuit);
 begin
   inherited Create;
-  FSuit := ASuit;
   FRank := ARank;
+  FSuit := ASuit;
+end;
+
+constructor TCard.Create(ACode: string);
+begin
+  inherited Create;
+
+  if Length(ACode) <> 2 then
+    raise Exception.CreateFmt('Invalid card code: "%s"', [ACode]);
+
+  var LRankChar := ACode[1];
+  var LSuitChar := ACode[2];
+
+  var LRankFound := False;
+  for var LRank := Low(TRank) to High(TRank) do
+  begin
+    LRankFound := RANK_ABVS[LRank] = LRankChar;
+    if LRankFound then
+    begin
+      FRank := LRank;
+      LRankFound := True;
+      Break;
+    end;
+  end;
+
+  if not LRankFound then
+    raise Exception.CreateFmt('Invalid rank in card code: "%s"', [ACode]);
+
+  var LSuitFound := False;
+  for var LSuit := Low(TSuit) to High(TSuit) do
+  begin
+    LSuitFound := SUIT_ABVS[LSuit] = LSuitChar;
+
+    if LSuitFound then
+    begin
+      FSuit := LSuit;
+      Break;
+    end;
+  end;
+
+  if not LSuitFound then
+    raise Exception.CreateFmt('Invalid suit in card code: "%s"', [ACode]);
 end;
 
 function TCard.Equals(ACard: TCard): Boolean;
 begin
   Result := (ACard.Suit = Self.FSuit) and (ACard.Rank = Self.FRank);
+end;
+
+function TCard.getCode: string;
+begin
+  Result := RANK_ABVS[FRank] + SUIT_ABVS[FSuit];
 end;
 
 function TCard.ToString: string;

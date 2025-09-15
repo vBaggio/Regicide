@@ -13,7 +13,9 @@ uses
 
 begin
   try
-    Writeln('Hello');
+    var LCard := TCard.Create(Ten, Hearts);
+    Writeln(LCard.ToString);
+    Writeln(LCard.Code);
     Sleep(3000)
   except
     on E: Exception do
