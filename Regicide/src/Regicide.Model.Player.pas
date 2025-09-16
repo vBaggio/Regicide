@@ -4,24 +4,24 @@ interface
 
 uses
   System.SysUtils, System.Generics.Collections,
-  Regicide.Model.Card;
+  Regicide.Model.Card, Regicide.Model.Hand;
 
   type
   TPlayer = class
   private
     FID: Integer;
     FName: string;
-    FHand: TObjectList<TCard>;
+    FHand: THand;
 
   public
     constructor Create(AID: Integer; AName: string);
     destructor Destroy; override;
 
     function ToString: string; reintroduce;
-    function Hand: TArray<TCard>;
 
     property ID: Integer read FID;
     property Name: string read FName;
+    property Hand: THand read FHand;
   end;
 
 implementation
@@ -32,19 +32,13 @@ constructor TPlayer.Create(AID: Integer; AName: string);
 begin
   FID := AID;
   FName := AName;
-  FHand := TObjectList<TCard>.Create;
-
+  FHand := THand.Create;
 end;
 
 destructor TPlayer.Destroy;
 begin
   FreeAndNil(FHand);
   inherited;
-end;
-
-function TPlayer.Hand: TArray<TCard>;
-begin
-  Result := FHand.ToArray;
 end;
 
 function TPlayer.ToString: string;

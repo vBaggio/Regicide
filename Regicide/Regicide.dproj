@@ -182,6 +182,7 @@
         <DCCReference Include="src\Regicide.Model.Player.pas"/>
         <DCCReference Include="src\Regicide.Model.Deck.pas"/>
         <DCCReference Include="src\Regicide.Utils.Stack.pas"/>
+        <DCCReference Include="src\Regicide.Model.Hand.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

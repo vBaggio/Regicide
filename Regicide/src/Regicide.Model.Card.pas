@@ -6,25 +6,27 @@ uses
   System.SysUtils;
 
 type
-  TSuit = (Spades, Hearts, Diamonds, Clubs);
+  TSuit = (Spades, Hearts, Diamonds, Clubs, None);
 
 const
   SUIT_NAMES: array[TSuit] of string = (
     'Spades',
     'Hearts',
     'Diamonds',
-    'Clubs'
+    'Clubs',
+    ''
   );
 
   SUIT_ABVS: array[TSuit] of Char = (
     'S',
     'H',
     'D',
-    'C'
+    'C',
+    'N'
   );
 
 type
-  TRank = (Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King);
+  TRank = (Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Joker);
 
 const
   RANK_NAMES: array[TRank] of string = (
@@ -40,7 +42,8 @@ const
     'Ten',
     'Jack',
     'Queen',
-    'King'
+    'King',
+    'Joker'
   );
 
   RANK_ABVS: array[TRank] of Char = (
@@ -56,7 +59,8 @@ const
     '0',
     'J',
     'Q',
-    'K'
+    'K',
+    'j'
   );
 
 type
@@ -141,7 +145,10 @@ end;
 
 function TCard.ToString: string;
 begin
-  Result := Format('%s of %s', [RANK_NAMES[FRank], SUIT_NAMES[FSuit]]);
+  Result := RANK_NAMES[FRank];
+
+  if FRank <> Joker then
+    Result := Format('%s of %s', [Result, SUIT_NAMES[FSuit]]);
 end;
 
 end.
