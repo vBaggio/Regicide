@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Generics.Collections,
   Regicide.Model.Card, Regicide.Model.Hand;
 
-  type
+type
   TPlayer = class
   private
     FID: Integer;

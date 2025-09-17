@@ -10,6 +10,7 @@ type
   TDeck = class
   private
     FCards: TObjectStack<TCard>;
+
   public
     constructor Create;
     destructor Destroy; override;
@@ -17,7 +18,6 @@ type
     procedure Shuffle;
     function DrawCard: TCard;
     procedure AddCard(ACard: TCard); overload;
-    procedure AddCard(ACards: TArray<TCard>); overload;
     function CardCount: Integer;
     function ContainsCard(ACard: TCard): Boolean;
   end;
@@ -26,16 +26,10 @@ implementation
 
 { TDeck }
 
-procedure TDeck.AddCard(ACards: TArray<TCard>);
-begin
- for var LCard in ACards do
-    AddCard(LCard);
-end;
-
 procedure TDeck.AddCard(ACard: TCard);
 begin
-  //validations...
-  FCards.Push(ACard);
+  if not ContainsCard(ACard) then
+    FCards.Push(ACard);
 end;
 
 function TDeck.CardCount: Integer;
