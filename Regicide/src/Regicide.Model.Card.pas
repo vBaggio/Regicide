@@ -69,12 +69,15 @@ type
     FSuit: TSuit;
     FRank: TRank;
     function getCode: string;
+  protected
+    class function IsMonarch(ARank: TRank): Boolean;
   public
-    constructor Create(ARank: TRank; ASuit: TSuit); overload;
-    constructor Create(ACode: string); overload;
+    constructor Create(ARank: TRank; ASuit: TSuit);
 
     function ToString: string; reintroduce;
     function Equals(ACard: TCard): Boolean; reintroduce;
+
+    function Value: Integer;
 
     property Suit: TSuit read FSuit;
     property Rank: TRank read FRank;
@@ -92,47 +95,6 @@ begin
   FSuit := ASuit;
 end;
 
-constructor TCard.Create(ACode: string);
-begin
-  inherited Create;
-
-  if Length(ACode) <> 2 then
-    raise Exception.CreateFmt('Invalid card code: "%s"', [ACode]);
-
-  var LRankChar := ACode[1];
-  var LSuitChar := ACode[2];
-
-  var LRankFound := False;
-  for var LRank := Low(TRank) to High(TRank) do
-  begin
-    LRankFound := RANK_ABVS[LRank] = LRankChar;
-    if LRankFound then
-    begin
-      FRank := LRank;
-      LRankFound := True;
-      Break;
-    end;
-  end;
-
-  if not LRankFound then
-    raise Exception.CreateFmt('Invalid rank in card code: "%s"', [ACode]);
-
-  var LSuitFound := False;
-  for var LSuit := Low(TSuit) to High(TSuit) do
-  begin
-    LSuitFound := SUIT_ABVS[LSuit] = LSuitChar;
-
-    if LSuitFound then
-    begin
-      FSuit := LSuit;
-      Break;
-    end;
-  end;
-
-  if not LSuitFound then
-    raise Exception.CreateFmt('Invalid suit in card code: "%s"', [ACode]);
-end;
-
 function TCard.Equals(ACard: TCard): Boolean;
 begin
   Result := (ACard.Suit = Self.FSuit) and (ACard.Rank = Self.FRank);
@@ -143,6 +105,11 @@ begin
   Result := RANK_ABVS[FRank] + SUIT_ABVS[FSuit];
 end;
 
+class function TCard.IsMonarch(ARank: TRank): Boolean;
+begin
+  Result := ARank in [Jack, Queen, King];
+end;
+
 function TCard.ToString: string;
 begin
   Result := RANK_NAMES[FRank];
@@ -150,5 +117,26 @@ begin
   if FRank <> Joker then
     Result := Format('%s of %s', [Result, SUIT_NAMES[FSuit]]);
 end;
+
+function TCard.Value: Integer;
+ begin
+   case FRank of
+     Ace:   Result := 1;
+     Two:   Result := 2;
+     Three: Result := 3;
+     Four:  Result := 4;
+     Five:  Result := 5;
+     Six:   Result := 6;
+     Seven: Result := 7;
+     Eight: Result := 8;
+     Nine:  Result := 9;
+     Ten:   Result := 10;
+     Jack:  Result := 10;
+     Queen: Result := 15;
+     King:  Result := 20;
+     Joker: Result := 0;
+     else   Result := 0;
+   end;
+ end;
 
 end.

@@ -4,22 +4,26 @@ interface
 
 uses
   System.SysUtils, System.Generics.Collections,
-  Regicide.Model.Card, Regicide.Utils.Stack;
+  Regicide.Model.Card, Regicide.Utils.Stack,
+  Regicide.Model.Interfaces;
 
 type
-  TDeck = class
+  TDeck = class(TInterfacedObject, ICardSet)
   private
     FCards: TObjectStack<TCard>;
-
+    FIsFaceUp: Boolean;
+    function ContainsCard(ACard: TCard): Boolean;
+  protected
+    function Cards: TObjectStack<TCard>;
   public
-    constructor Create;
+    constructor Create(AIsFaceUp: Boolean = False);
     destructor Destroy; override;
 
     procedure Shuffle;
+    function PeekTopCard: TCard;
     function DrawCard: TCard;
-    procedure AddCard(ACard: TCard); overload;
+    procedure AddCard(ACard: TCard);
     function CardCount: Integer;
-    function ContainsCard(ACard: TCard): Boolean;
   end;
 
 implementation
@@ -37,8 +41,14 @@ begin
   Result := FCards.Count;
 end;
 
-constructor TDeck.Create;
+function TDeck.Cards: TObjectStack<TCard>;
 begin
+  Result := FCards;
+end;
+
+constructor TDeck.Create(AIsFaceUp: Boolean);
+begin
+  FIsFaceUp := AIsFaceUp;
   FCards := TObjectStack<TCard>.Create(True);
 end;
 
@@ -54,6 +64,14 @@ begin
     Result := nil
   else
     Result := FCards.Extract;
+end;
+
+function TDeck.PeekTopCard: TCard;
+begin
+  if FIsFaceUp then
+    Result := FCards.Peek
+  else
+    Result := Nil;
 end;
 
 function TDeck.ContainsCard(ACard: TCard): Boolean;

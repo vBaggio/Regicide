@@ -4,10 +4,10 @@ interface
 
 uses
   System.SysUtils, System.Generics.Collections,
-  Regicide.Model.Card;
+  Regicide.Model.Card, Regicide.Model.Interfaces;
 
 type
-  THand = class
+  THand = class(TInterfacedObject, ICardSet)
   private
     FCards: TObjectList<TCard>;
     function ExtractByCode(ACode: string): TCard;
@@ -22,6 +22,7 @@ type
     procedure AddCard(ACard: TCard);
     function ExtractCard(ACode: string): TCard; overload;
     function ExtractCard(ACard: TCard): TCard; overload;
+    function HasJoker: Boolean;
   end;
 
 implementation
@@ -86,6 +87,18 @@ begin
     Result := FCards.Extract(ACard)
   else
     raise Exception.Create('Card not present in Hand')
+end;
+
+function THand.HasJoker: Boolean;
+begin
+  Result := False;
+
+  for var LCard in FCards do
+  begin
+    Result := LCard.Rank = Joker;
+    if Result then
+      break;
+  end;
 end;
 
 function THand.ExtractCard(ACode: string): TCard;
