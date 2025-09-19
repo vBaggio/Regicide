@@ -5,6 +5,7 @@ interface
 uses
   System.SysUtils,
   System.Generics.Collections,
+  Regicide.Model.Player,
   Regicide.Model.Hand,
   Regicide.Model.Deck,
   Regicide.Model.Card,
@@ -13,7 +14,15 @@ uses
 
 type
   TGame = class
+  private
+    FTavernDeck: TDeck;
+    FDiscardPile: TDeck;
+    FMonarchDeck: TMonarchDeck;
+    FPlayers: TObjectList<TPlayer>;
 
+    FCurrentMonarch: TMonarch;
+    FCurrentPlayer: TPlayer;
+    FPlayedCards: TObjectList<TCard>;
   end;
 
 

@@ -188,6 +188,7 @@
         <DCCReference Include="src\Regicide.Model.Deck.Monarch.pas"/>
         <DCCReference Include="src\Regicide.Model.Game.pas"/>
         <DCCReference Include="src\Regicide.Service.GameController.pas"/>
+        <DCCReference Include="src\Regicide.Service.ValueCalculation.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

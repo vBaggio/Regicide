@@ -19,7 +19,7 @@ type
     constructor Create(AIsFaceUp: Boolean = False);
     destructor Destroy; override;
 
-    procedure Shuffle;
+    procedure Shuffle; virtual;
     function PeekTopCard: TCard;
     function DrawCard: TCard;
     procedure AddCard(ACard: TCard);
@@ -89,6 +89,9 @@ end;
 
 procedure TDeck.Shuffle;
 begin
+  if Self.CardCount <=1 then
+    Exit;
+
   FCards.Shuffle;
 end;
 
